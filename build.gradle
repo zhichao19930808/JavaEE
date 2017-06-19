@@ -1,0 +1,16 @@
+group 'JavaEE'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'war'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'javax:javaee-api:7.0'
+    compile 'mysql:mysql-connector-java:5.1.42'
+}

@@ -1,0 +1,26 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+#box {
+    margin: auto;
+    width: 1000px;
+    height: 650px;
+    background: wheat;
+}
+#head {
+    width: 1000px;
+    height: 80px;
+}
+#head h1 {
+    color: darkred;
+}
+#center {
+    width: 1000px;
+    height: 500px;
+}
+#footer {
+    width: 1000px;
+    height: 70px;
+    text-align: right;
+}

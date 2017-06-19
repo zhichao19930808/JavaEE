@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JavaEE.iml" filepath="$PROJECT_DIR$/.idea/modules/JavaEE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JavaEE_main.iml" filepath="$PROJECT_DIR$/.idea/modules/JavaEE_main.iml" group="JavaEE" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JavaEE_test.iml" filepath="$PROJECT_DIR$/.idea/modules/JavaEE_test.iml" group="JavaEE" />
+    </modules>
+  </component>
+</project>
