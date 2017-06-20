@@ -17,6 +17,7 @@
     <input type="password" name="password" placeholder="密码"><br>
     <input type="submit" value = "登陆">
   </form>
+  <hr/>
  <p> <%=(request.getAttribute("message")!=null)? request.getAttribute("message"):""%></p>
   <%--<p>--%>
     <%--<%--%>

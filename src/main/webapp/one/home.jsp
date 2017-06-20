@@ -5,6 +5,11 @@
 <html>
 <head>
     <title>Title</title>
+    <script>
+        function del() {
+            return confirm('是否删除这条记录？')
+        }
+    </script>
 </head>
 <body>
 <%
@@ -43,7 +48,7 @@
     <%
         List<Students>students = (List<Students>) session.getAttribute("students");
         for (Students student : students) {
-            out.print("<tr>" + "<td>" + student.getId() + "</td>" + "<td>" + student.getName() + "</td>" + "<td>" + student.getGender() + "</td>" + "<td>" + student.getDate() + "</td>"+ "<td><a href='student?action=queryById&id="+student.getId()+"'>编辑</td>" + "</td>"+ "<td><a href='#'>删除</td>"+  "</tr>");
+            out.print("<tr>" + "<td>" + student.getId() + "</td>" + "<td>" + student.getName() + "</td>" + "<td>" + student.getGender() + "</td>" + "<td>" + student.getDate() + "</td>"+ "<td><a href='student?action=queryById&id="+student.getId()+"'>编辑</td>" + "</td>"+ "<td><a href='student?action=remove&id="+student.getId()+"' onclick='return del()'>删除</td>"+  "</tr>");
         }
     %>
 

@@ -41,8 +41,12 @@ public class StudentAction extends HttpServlet{
             modify(req, resp);
             return;
         }
+        if ("remove".equals(Action)) {
+            remove(req, resp);
+            return;
+        }
         req.setAttribute("message", "出了一点问题");
-        req.getRequestDispatcher("default.jsp").forward(req, resp);
+        req.getRequestDispatcher("index.jsp").forward(req, resp);
     }
 
     @Override
@@ -157,7 +161,7 @@ public class StudentAction extends HttpServlet{
 
         if (name.length() == 0 || gender.length() == 0 || date.length() == 0) {
             req.setAttribute("message", "您输入的信息不规范");
-            req.getRequestDispatcher("home.jsp").forward(req, resp);
+            req.getRequestDispatcher("edit.jsp").forward(req, resp);
         } else {
             Connection connection = Db.getConnection();
             PreparedStatement statement = null;
@@ -169,6 +173,7 @@ public class StudentAction extends HttpServlet{
                     statement.setString(1, name);
                     statement.setString(2, gender);
                     statement.setString(3, date);
+                    statement.setInt(4,id);
                     statement.executeUpdate();
 
                     resp.sendRedirect("student?action=queryAll");
@@ -179,6 +184,32 @@ public class StudentAction extends HttpServlet{
                 Db.close(null, statement, connection);
             }
         }
+    }
+    private void remove(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+
+        Connection connection = Db.getConnection();
+        PreparedStatement statement = null;
+
+        try {
+            String sql ="DELETE FROM db_javaee.studens WHERE id=?";
+            if (connection != null) {
+                statement = connection.prepareStatement(sql);
+                statement.setInt(1,id);
+                statement.executeUpdate();
+
+                resp.sendRedirect("student?action=queryAll");
+            } else {
+                req.setAttribute("message", "没有获取到学生信息");
+                req.getRequestDispatcher("home.jsp").forward(req, resp);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Db.close(null,statement,connection);
+        }
+
     }
 
 }

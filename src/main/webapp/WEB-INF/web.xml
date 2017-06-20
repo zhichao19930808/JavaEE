@@ -10,7 +10,7 @@
     <!--1. 注册一个 servlet-->
     <servlet>
         <servlet-name>register</servlet-name>
-        <servlet-class>one.RegisterServilet</servlet-class>
+        <servlet-class>one.UserAction</servlet-class>
     </servlet>
 
     <!--2. 映射一个 servlet-->

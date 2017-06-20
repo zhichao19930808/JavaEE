@@ -24,5 +24,7 @@
     <input type="submit" value="保存">
 </form>
 <hr/>
+<p> <%=(request.getAttribute("message")!=null)?request.getAttribute("message"):""%></p>
+<hr/>
 </body>
 </html>
