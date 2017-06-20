@@ -23,11 +23,6 @@
     </select><br>
     <input type="submit" value="注册">
 </form>
-<p><%
-    String message = (String) request.getAttribute("message");
-    if (message != null) {
-        out.print(message);
-    }
-%></p>
+<p>${requestScope.message}</p>
 </body>
 </html>

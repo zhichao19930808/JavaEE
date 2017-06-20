@@ -1,12 +1,25 @@
-* {
-    margin: 0;
-    padding: 0;
-}
+
 #box {
     margin: auto;
     width: 1000px;
     height: 650px;
     background: wheat;
+}
+a {
+    text-decoration: none;
+}
+a:link {
+    color: darkgoldenrod;
+}
+a:visited {
+    color:orangered;
+}
+a:hover {
+    color:blue;
+    font-size: 20px;
+}
+a:active {
+    color: darkred;
 }
 #head {
     width: 1000px;
@@ -14,10 +27,14 @@
 }
 #head h1 {
     color: darkred;
+    text-align: center;
 }
 #center {
     width: 1000px;
     height: 500px;
+}
+#center h3{
+    color: brown;
 }
 #footer {
     width: 1000px;

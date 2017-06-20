@@ -18,7 +18,8 @@
     <input type="submit" value = "登陆">
   </form>
   <hr/>
- <p> <%=(request.getAttribute("message")!=null)? request.getAttribute("message"):""%></p>
+  <p>${requestScope.message}</p>
+ <%--<p> <%=(request.getAttribute("message")!=null)? request.getAttribute("message"):""%></p>--%>
   <%--<p>--%>
     <%--<%--%>
       <%--String message = (String) request.getAttribute("message");--%>
@@ -28,5 +29,7 @@
     <%--%>--%>
   <%--</p>--%>
   <a href="signup.jsp">注册</a>
+  <hr/>
+  <a href="../index.jsp">回到活人先生的主页</a>
   </body>
 </html>

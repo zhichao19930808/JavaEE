@@ -2,12 +2,13 @@
 <html>
 <head>
     <title>活人先生的首页</title>
-    <link rel="stylesheet" href="css/homePage.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 <div id="box">
-    <div id="head">欢迎来到活人先生的网站</div>
+    <div id="head"><h1>欢迎来到活人先生的网站</h1></div>
     <div id="center">
+        <h3>来看看我的一些小作品：</h3>
         <ol type="1">
             <li><a href="start/classic.jsp">一个经典的jsp页面</a></li>
             <li><a href="one/index.jsp">现在在做</a></li>
