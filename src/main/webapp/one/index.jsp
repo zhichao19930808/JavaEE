@@ -19,7 +19,7 @@
   </form>
   <hr/>
   <p>${requestScope.message}</p>
-  <p>为了练习方便，此处管理员使用注册的方式，请不要考虑业务逻辑</p>
+  <p>为了使用方便，此处管理员使用注册的方式</p>
 
   <a href="signup.jsp">注册</a>
   <hr/>

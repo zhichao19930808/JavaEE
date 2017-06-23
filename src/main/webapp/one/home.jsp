@@ -24,8 +24,8 @@
     <input type="hidden" name="action" value="add">
     <input type="text" name="name" placeholder="学生姓名"><br>
     <p>性别</p>
-    <input type="radio" name="gender" value="nan">男
-    <input type="radio" name="gender" value="nv">女 <br>
+    <input type="radio" name="gender" value="男">男
+    <input type="radio" name="gender" value="女">女 <br>
     <input type="date" name="date" ><br>
     <input type="submit" value="添加">
 </form>
