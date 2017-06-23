@@ -54,7 +54,7 @@
             <td>${student.gender}</td>
             <td>${student.date}</td>
             <td><a href="student?action=queryById&id=${student.id}">编辑</a></td>
-            <td><a href="student?action=remove&id=${student.id}">删除</a></td>
+            <td><a href="student?action=remove&id=${student.id}" onclick="del()">删除</a></td>
         </tr>
     </c:forEach>
 
