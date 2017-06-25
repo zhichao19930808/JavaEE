@@ -11,7 +11,7 @@
         <h3>来看看我的一些小作品：</h3>
         <ol type="1">
             <li><a href="start/classic.jsp">一个经典的jsp页面</a></li>
-            <li><a href="one/index.jsp">现在在做</a></li>
+            <li><a href="one/index.jsp">模拟的一个简单的信息管理系统，可对信息进行增删查改的操作。</a></li>
         </ol>
     </div>
     <div id="footer">谢谢您的参观</div>

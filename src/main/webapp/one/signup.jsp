@@ -11,16 +11,6 @@
     <input type="text" name="nick" placeholder="昵称"><br>
     <input type="text" name="mobile" placeholder="手机号码"><br>
     <input type="password" name="password" placeholder="密码"><br>
-    业余爱好：
-    <input type="checkbox" name="hobbies" value="TV">TV
-    <input type="checkbox" name="hobbies" value="Movie">Movie
-    <input type="checkbox" name="hobbies" value="Game">Game<br>
-    所在城市：
-    <select name="cities" multiple>
-        <option value="Beijing">Beijing</option>
-        <option value="Shanghai">Shanghai</option>
-        <option value="Shenzhen">Shenzhen</option>
-    </select><br>
     <input type="submit" value="注册">
 </form>
 <p>${requestScope.message}</p>
