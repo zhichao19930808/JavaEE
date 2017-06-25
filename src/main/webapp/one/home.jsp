@@ -11,6 +11,13 @@
         function del() {
             return confirm('是否删除这条记录？')
         }
+        function selectALL() {
+            var cb = document.getElementById('cb');
+            var items = document.getElementsByClassName('st');
+            for (var i = 0; i < items.length; i++) {
+                items[i].checked = cb.checked
+            }
+        }
     </script>
 </head>
 <body>
@@ -32,6 +39,8 @@
 <hr/>
 <p>${requestScope.message}</p>
 <hr/>
+<form action="/one/student">
+    <input type="hidden" name="action" value="batchRemove">
 <table border="1">
     <c:choose>
         <c:when test="${fn:length(sessionScope.students) eq 0}">
@@ -39,7 +48,7 @@
         </c:when>
         <c:otherwise>
             <tr>
-                <th>序号</th>
+                <th><input type="checkbox" id="cb" onclick="return selectALL()">序号</th>
                 <th>姓名</th>
                 <th>性别</th>
                 <th>出生日期</th>
@@ -49,16 +58,20 @@
     </c:choose>
     <c:forEach var="student" items="${sessionScope.students}" varStatus="vs" begin="0" end="30" step="1">
         <tr>
-            <td>${vs.count}</td>
+            <td><input class="st" type="checkbox" name="ids" value="${student.id}">${vs.count}</td>
             <td>${student.name}</td>
             <td>${student.gender}</td>
             <td>${student.date}</td>
             <td><a href="student?action=queryById&id=${student.id}">编辑</a></td>
-            <td><a href="student?action=remove&id=${student.id}" onclick="del()">删除</a></td>
+            <td><a href="student?action=remove&id=${student.id}" onclick="return del()">删除</a></td>
         </tr>
     </c:forEach>
 
 </table>
+    <c:if test="${fn:length(sessionScope.students) ne 0}">
+    <input type="submit" value="删除" onclick="return del()">
+    </c:if>
+</form>
 <a href="second.jsp">下一页</a>
 <a href="user?action=logout">注销</a>
 </body>

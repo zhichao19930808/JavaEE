@@ -33,3 +33,7 @@ FROM db_javaee.user;
 SELECT *
 FROM db_javaee.studens;
 
+SELECT *
+FROM db_1702.ip
+WHERE geo REGEXP '北京';
+

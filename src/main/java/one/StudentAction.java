@@ -1,5 +1,6 @@
 package one;
 
+import sun.plugin2.message.Message;
 import util.Db;
 
 import javax.servlet.ServletException;
@@ -45,6 +46,10 @@ public class StudentAction extends HttpServlet{
             remove(req, resp);
             return;
         }
+        if ("batchRemove".equals(Action)) {
+            batchRemove(req, resp);
+            return;
+        }
         req.setAttribute("message", "出了一点问题");
         req.getRequestDispatcher("index.jsp").forward(req, resp);
     }
@@ -59,7 +64,7 @@ public class StudentAction extends HttpServlet{
         String date = req.getParameter("date");
 
         if (name.length() == 0 || gender.length() == 0 || date.length() == 0) {
-            req.setAttribute("message", "您输入的信息不规范");
+            req.setAttribute("message", "添加失败：您输入的信息不规范");
             req.getRequestDispatcher("home.jsp").forward(req, resp);
         } else {
             Connection connection = Db.getConnection();
@@ -107,7 +112,7 @@ public class StudentAction extends HttpServlet{
                     req.getSession().setAttribute("students", students);
                     resp.sendRedirect("home.jsp");
                 } else {
-                    req.setAttribute("message", "没有获取到学生信息");
+                    req.setAttribute("message", "异常：没有获取到学生信息");
                     req.getRequestDispatcher("index.jsp").forward(req, resp);
                 }
 
@@ -142,7 +147,7 @@ public class StudentAction extends HttpServlet{
                     req.getSession().setAttribute("student", student);
                     resp.sendRedirect("edit.jsp");
                 } else {
-                    req.setAttribute("message", "没有获取到学生信息");
+                    req.setAttribute("message", "异常：没有获取到该学生信息");
                     req.getRequestDispatcher("home.jsp").forward(req, resp);
                 }
 
@@ -160,7 +165,7 @@ public class StudentAction extends HttpServlet{
         String date = req.getParameter("date");
 
         if (name.length() == 0 || gender.length() == 0 || date.length() == 0) {
-            req.setAttribute("message", "您输入的信息不规范");
+            req.setAttribute("message", "编辑失败：您输入的信息不规范");
             req.getRequestDispatcher("edit.jsp").forward(req, resp);
         } else {
             Connection connection = Db.getConnection();
@@ -185,31 +190,43 @@ public class StudentAction extends HttpServlet{
             }
         }
     }
-    private void remove(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int id = Integer.parseInt(req.getParameter("id"));
-
+    private void removeByid(int id,HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Connection connection = Db.getConnection();
         PreparedStatement statement = null;
 
         try {
             String sql ="DELETE FROM db_javaee.studens WHERE id=?";
-            if (connection != null) {
                 statement = connection.prepareStatement(sql);
                 statement.setInt(1,id);
                 statement.executeUpdate();
-
-                resp.sendRedirect("student?action=queryAll");
-            } else {
-                req.setAttribute("message", "没有获取到学生信息");
-                req.getRequestDispatcher("home.jsp").forward(req, resp);
-            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
             Db.close(null,statement,connection);
         }
+    }
+    private void remove(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
 
+        Connection connection = Db.getConnection();
+        PreparedStatement statement = null;
+        removeByid(id, req, resp);
+        resp.sendRedirect("student?action=queryAll");
+
+    }
+    private void batchRemove(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String[] ids = req.getParameterValues("ids");
+        if (ids == null) {
+            req.setAttribute("message","删除失败：没有选择任何需要删除的记录");
+            req.getRequestDispatcher("home.jsp").forward(req, resp);
+            return;
+        }
+        for (String idString : ids) {
+            int id = Integer.parseInt(idString);
+            removeByid(id,req,resp);
+        }
+        resp.sendRedirect("student?action=queryAll");
     }
 
 }
