@@ -37,3 +37,6 @@ SELECT *
 FROM db_1702.ip
 WHERE geo REGEXP '北京';
 
+SELECT *
+FROM db_1702.ip;
+
