@@ -45,7 +45,7 @@ public class IpServlet extends HttpServlet{
         ResultSet resultSet = null;
 
         try {
-            String sql ="SELECT * FROM db_1702.ip WHERE  geo REGEXP ?";
+            String sql ="SELECT * FROM ip.ip WHERE  geo REGEXP ?";
             if (connection != null) {
                 statement = connection.prepareStatement(sql);
                 statement.setString(1,geo);

@@ -25,7 +25,7 @@ public class StudentAction extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String Action = req.getParameter("action");
-        System.out.println("student.....action...");
+        System.out.println("进入到student界面。。。");
         if ("add".equals(Action)) {
             add(req, resp);
             return;

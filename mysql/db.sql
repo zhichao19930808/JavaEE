@@ -30,6 +30,7 @@ CREATE TABLE db_javaee.studens (
 
 SELECT *
 FROM db_javaee.user;
+SELECT * FROM db_javaee.user;
 SELECT *
 FROM db_javaee.studens;
 

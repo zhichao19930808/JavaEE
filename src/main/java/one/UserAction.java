@@ -22,7 +22,7 @@ public class UserAction extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        System.out.println("action...");
+        System.out.println("进入到user界面。。。");
         if ("register".equals(action)) {
             register(request,response);
             return;
