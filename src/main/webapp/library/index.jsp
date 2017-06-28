@@ -14,8 +14,8 @@
 <h1>首页</h1>
 <form action="libraryUser" method="post">
     <input type="hidden" name="action" value="login"><br>
-    <input type="text" name="userName" placeholder="账户名"><br>
-    <input type="password" name="password" placeholder="密码"><br>
+    <input type="text" name="userName" placeholder="账户名" value="admin"><br>
+    <input type="password" name="password" placeholder="密码" value="aaa"><br>
     <input type="submit" value="登录">
     <a href="register.jsp">注册</a>
 </form>

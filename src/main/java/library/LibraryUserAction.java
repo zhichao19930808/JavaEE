@@ -85,21 +85,28 @@ public class LibraryUserAction extends HttpServlet {
         String sql = "SELECT * FROM library.user WHERE userName=? AND password=?";
         try {
             if (connection == null) {
-                System.out.println("111");
                 req.setAttribute("message", "Connection为null");
                 req.getRequestDispatcher("index.jsp").forward(req,resp);
             } else {
-                System.out.println(222);
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setString(1,userName);
                 preparedStatement.setString(2,password);
                 resultSet=preparedStatement.executeQuery();
                 if (resultSet.next()) {
-                    System.out.println(333);
-                    req.getSession().setAttribute("userName", resultSet.getString("userName"));
-                    resp.sendRedirect("default.jsp");
+                    String role = resultSet.getString("role");
+                    req.getSession().setAttribute("role", resultSet.getString("role"));
+                    if ("管理员".equals(role)) {
+                        resp.sendRedirect("admin.jsp");
+                        return;
+                    }
+                    if ("用户".equals(role)) {
+                        resp.sendRedirect("default.jsp");
+                        return;
+                    }
+                    req.getSession().setAttribute("userName", "错误：身份不明的人。。。");
+                    resp.sendRedirect("index.jsp");
+
                 } else {
-                    System.out.println(444);
                     req.setAttribute("message","用户名或密码错误");
                     req.getRequestDispatcher("index.jsp").forward(req,resp);
                 }
