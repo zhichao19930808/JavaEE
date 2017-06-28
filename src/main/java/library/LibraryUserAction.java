@@ -28,11 +28,16 @@ public class LibraryUserAction extends HttpServlet {
             register(req, resp);
             return;
         }
+        if ("login".equals(action)) {
+            System.out.println("进入到login方案");
+            login(req, resp);
+            return;
+        }
         req.setAttribute("message", "错误：没有与之匹配的方法");
         resp.sendRedirect("index.jsp");
     }
 
-    protected void register(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void register(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("开始执行register方法");
         String userName = req.getParameter("userName").trim();
         String password = req.getParameter("password");
@@ -62,6 +67,42 @@ public class LibraryUserAction extends HttpServlet {
                 preparedStatement.executeUpdate();
                 req.setAttribute("message","您已注册成功");
                 req.getRequestDispatcher("index.jsp").forward(req,resp);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            Db.close(resultSet,preparedStatement,connection);
+        }
+    }
+    private void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("开始执行login方法");
+        String userName = req.getParameter("userName").trim();
+        String password = req.getParameter("password");
+
+        Connection connection = Db.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "SELECT * FROM library.user WHERE userName=? AND password=?";
+        try {
+            if (connection == null) {
+                System.out.println("111");
+                req.setAttribute("message", "Connection为null");
+                req.getRequestDispatcher("index.jsp").forward(req,resp);
+            } else {
+                System.out.println(222);
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1,userName);
+                preparedStatement.setString(2,password);
+                resultSet=preparedStatement.executeQuery();
+                if (resultSet.next()) {
+                    System.out.println(333);
+                    req.getSession().setAttribute("userName", resultSet.getString("userName"));
+                    resp.sendRedirect("default.jsp");
+                } else {
+                    System.out.println(444);
+                    req.setAttribute("message","用户名或密码错误");
+                    req.getRequestDispatcher("index.jsp").forward(req,resp);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
