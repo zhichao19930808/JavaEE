@@ -19,6 +19,13 @@ import java.sql.SQLException;
 @WebServlet(urlPatterns = "/library/libraryUser")
 public class LibraryUserAction extends HttpServlet {
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        super.doGet(req, resp);
+        System.out.println("进入到doGet方法");
+        doPost(req, resp);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //        super.doPost(req, resp);
         System.out.println("进入到LibraryUser界面");
@@ -31,6 +38,11 @@ public class LibraryUserAction extends HttpServlet {
         if ("login".equals(action)) {
             System.out.println("进入到login方案");
             login(req, resp);
+            return;
+        }
+        if ("logout".equals(action)) {
+            System.out.println("进入到logout方案");
+            logout(req, resp);
             return;
         }
         req.setAttribute("message", "错误：没有与之匹配的方法");
@@ -74,6 +86,7 @@ public class LibraryUserAction extends HttpServlet {
             Db.close(resultSet,preparedStatement,connection);
         }
     }
+
     private void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("开始执行login方法");
         String userName = req.getParameter("userName").trim();
@@ -116,5 +129,9 @@ public class LibraryUserAction extends HttpServlet {
         }finally {
             Db.close(resultSet,preparedStatement,connection);
         }
+    }
+    private void logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getSession().invalidate();
+        resp.sendRedirect("index.jsp");
     }
 }

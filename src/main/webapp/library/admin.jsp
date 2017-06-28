@@ -20,5 +20,6 @@
 <hr>
 ${sessionScope.userName}
 <hr>
+<a href="libraryUser?action=logout">注销</a>
 </body>
 </html>
