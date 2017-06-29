@@ -109,7 +109,7 @@ public class LibraryUserAction extends HttpServlet {
                     String role = resultSet.getString("role");
                     req.getSession().setAttribute("role", resultSet.getString("role"));
                     if ("管理员".equals(role)) {
-                        resp.sendRedirect("admin.jsp");
+                        resp.sendRedirect("libraryBooks?action=queryAll");
                         return;
                     }
                     if ("用户".equals(role)) {

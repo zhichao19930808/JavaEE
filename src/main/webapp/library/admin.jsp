@@ -20,6 +20,44 @@
 <hr>
 ${sessionScope.userName}
 <hr>
+<form action="libraryBooks">
+    <input type="hidden" name="action" value="add">
+    <input type="text" name="title" placeholder="书名"><br>
+    <input type="text" name="author" placeholder="作者"><br>
+    <input type="text" name="pub" placeholder="出版社"><br>
+    <input type="date" name="time" placeholder="出版时间">出版时间<br>
+    <input type="text" name="price" placeholder="价格"><br>
+    <input type="text" name="amount" placeholder="数量"><br>
+    <input type="submit" value="添加">
+</form>
+<hr>
+${sessionScope.message}
+<table border="1px">
+    <tr>
+        <th>序号</th>
+        <th>标题</th>
+        <th>作者</th>
+        <th>出版社</th>
+        <th>出版时间</th>
+        <th>定价</th>
+        <th>数量</th>
+        <th colspan="2">操作</th>
+    </tr>
+    <c:forEach var="book" items="${sessionScope.books}" varStatus="vs">
+        <tr>
+            <td>${vs.count}</td>
+            <td>${book.title}</td>
+            <td>${book.author}</td>
+            <td>${book.pub}</td>
+            <td>${book.time}</td>
+            <td>${book.price}</td>
+            <td>${book.amount}</td>
+            <td><a href="book?action=queryById&id=${book.id}">编辑</a></td>
+            <td><a href="book?action=remove&id=${book.id}" onclick="return del()">删除</a></td>
+        </tr>
+    </c:forEach>
+</table>
+<hr>
 <a href="libraryUser?action=logout">注销</a>
 </body>
 </html>
