@@ -52,6 +52,11 @@ public class LibraryBooksAction extends HttpServlet {
             edit(req, resp);
             return;
         }
+        if ("remove".equals(action)) {
+            System.out.println("进入到remove方案");
+            remove(req, resp);
+            return;
+        }
         req.setAttribute("message", "错误：没有与之匹配的方法");
         req.getRequestDispatcher("index.jsp").forward(req,resp);
     }
@@ -88,7 +93,7 @@ public class LibraryBooksAction extends HttpServlet {
                     preparedStatement.executeUpdate();
 
                     req.setAttribute("message", "您已添加成功");
-                    resp.sendRedirect("libraryBooks?action=queryAll");
+                    queryAll(req, resp);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -97,6 +102,29 @@ public class LibraryBooksAction extends HttpServlet {
             }
         }
     }
+    private void remove(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("开始执行remove方法");
+        int id = Integer.parseInt(req.getParameter("id"));
+        Connection connection = Db.getConnection();
+        PreparedStatement preparedStatement = null;
+        String sql = "DELETE FROM library.books WHERE id = ?";
+        try {
+            if (connection == null) {
+                req.setAttribute("message", "Connection为null");
+                req.getRequestDispatcher("index.jsp").forward(req, resp);
+            } else {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1,id);
+                preparedStatement.executeUpdate();
+                req.setAttribute("message","成功删除该书籍");
+                queryAll(req,resp);
+            }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                Db.close(null, preparedStatement, connection);
+            }
+        }
     private void queryAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("开始执行queryALL方法");
         Connection connection = Db.getConnection();
@@ -199,7 +227,7 @@ public class LibraryBooksAction extends HttpServlet {
                 preparedStatement.setInt(6,amount);
                 preparedStatement.setInt(7,id);
                 preparedStatement.executeUpdate();
-                resp.sendRedirect("libraryBooks?action=queryAll");
+                queryAll(req, resp);
             }
         } catch (SQLException e) {
             e.printStackTrace();
