@@ -31,7 +31,8 @@ ${sessionScope.userName}
     <input type="submit" value="添加">
 </form>
 <hr>
-${sessionScope.message}
+<p>${requestScope.message}</p>
+<hr>
 <table border="1px">
     <tr>
         <th>序号</th>
@@ -52,8 +53,8 @@ ${sessionScope.message}
             <td>${book.time}</td>
             <td>${book.price}</td>
             <td>${book.amount}</td>
-            <td><a href="book?action=queryById&id=${book.id}">编辑</a></td>
-            <td><a href="book?action=remove&id=${book.id}" onclick="return del()">删除</a></td>
+            <td><a href="libraryBooks?action=queryById&id=${book.id}">编辑</a></td>
+            <td><a href="libraryBooks?action=remove&id=${book.id}" onclick="return del()">删除</a></td>
         </tr>
     </c:forEach>
 </table>

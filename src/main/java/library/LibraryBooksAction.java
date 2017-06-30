@@ -42,8 +42,13 @@ public class LibraryBooksAction extends HttpServlet {
             queryAll(req, resp);
             return;
         }
+        if ("queryById".equals(action)) {
+            System.out.println("进入到queryAll方案");
+            queryById(req, resp);
+            return;
+        }
         req.setAttribute("message", "错误：没有与之匹配的方法");
-        resp.sendRedirect("index.jsp");
+        req.getRequestDispatcher("index.jsp").forward(req,resp);
     }
 
     private void add(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -52,33 +57,39 @@ public class LibraryBooksAction extends HttpServlet {
         String author = req.getParameter("author").trim();
         String pub = req.getParameter("pub").trim();
         String time = req.getParameter("time").trim();
-        double price = Double.parseDouble(req.getParameter("price").trim());
-        int amount = Integer.parseInt(req.getParameter("amount").trim());
-        Connection connection = Db.getConnection();
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        String sql = "INSERT INTO library.books VALUES(NULL, ?, ?, ?, ?, ?, ?)";
-        try {
-            if (connection == null) {
-                req.setAttribute("message", "Connection为null");
-                req.getRequestDispatcher("index.jsp").forward(req,resp);
-            } else {
-                preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setString(1, title);
-                preparedStatement.setString(2, author);
-                preparedStatement.setString(3, pub);
-                preparedStatement.setString(4, time);
-                preparedStatement.setDouble(5, price);
-                preparedStatement.setInt(6, amount);
-                preparedStatement.executeUpdate();
 
-                req.setAttribute("message","您已添加成功");
-                queryAll(req, resp);
+        if (title.length() == 0 || author.length() == 0 || pub.length() == 0 || time.length() == 0) {
+            req.setAttribute("message", "添加失败：您输入的信息不规范");
+            req.getRequestDispatcher("admin.jsp").forward(req, resp);
+        } else {
+            double price = Double.parseDouble(req.getParameter("price").trim());
+            int amount = Integer.parseInt(req.getParameter("amount").trim());
+            Connection connection = Db.getConnection();
+            PreparedStatement preparedStatement = null;
+            ResultSet resultSet = null;
+            String sql = "INSERT INTO library.books VALUES(NULL, ?, ?, ?, ?, ?, ?)";
+            try {
+                if (connection == null) {
+                    req.setAttribute("message", "Connection为null");
+                    req.getRequestDispatcher("index.jsp").forward(req, resp);
+                } else {
+                    preparedStatement = connection.prepareStatement(sql);
+                    preparedStatement.setString(1, title);
+                    preparedStatement.setString(2, author);
+                    preparedStatement.setString(3, pub);
+                    preparedStatement.setString(4, time);
+                    preparedStatement.setDouble(5, price);
+                    preparedStatement.setInt(6, amount);
+                    preparedStatement.executeUpdate();
+
+                    req.setAttribute("message", "您已添加成功");
+                    resp.sendRedirect("libraryBooks?action=queryAll");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                Db.close(null, preparedStatement, connection);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            Db.close(null,preparedStatement,connection);
         }
     }
     private void queryAll(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -109,6 +120,40 @@ public class LibraryBooksAction extends HttpServlet {
                 }
                 req.getSession().setAttribute("books", books);
                 resp.sendRedirect("admin.jsp");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            Db.close(resultSet, preparedStatement, connection);
+        }
+    }
+    private void queryById(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("开始执行queryById方法");
+        int id = Integer.parseInt(req.getParameter("id"));
+        Connection connection = Db.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "SELECT * FROM library.books WHERE id=?";
+        try {
+            if (connection == null) {
+                req.setAttribute("message", "Connection为null");
+                req.getRequestDispatcher("index.jsp").forward(req,resp);
+            } else {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1,id);
+                resultSet = preparedStatement.executeQuery();
+                resultSet.next();
+                    Books book = new Books(
+                            resultSet.getInt("id"),
+                            resultSet.getString("title"),
+                            resultSet.getString("author"),
+                            resultSet.getString("pub"),
+                            resultSet.getString("time"),
+                            resultSet.getDouble("price"),
+                            resultSet.getInt("amount")
+                    );
+                req.getSession().setAttribute("book", book);
+                resp.sendRedirect("edit.jsp");
             }
         } catch (SQLException e) {
             e.printStackTrace();
