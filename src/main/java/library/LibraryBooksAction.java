@@ -92,7 +92,7 @@ public class LibraryBooksAction extends HttpServlet {
                     preparedStatement.setInt(6, amount);
                     preparedStatement.executeUpdate();
 
-                    req.setAttribute("message", "您已添加成功");
+                    req.setAttribute("message", "成功添加书名为《"+title+"》的书集");
                     queryAll(req, resp);
                 }
             } catch (SQLException e) {
@@ -105,6 +105,7 @@ public class LibraryBooksAction extends HttpServlet {
     private void remove(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("开始执行remove方法");
         int id = Integer.parseInt(req.getParameter("id"));
+        String title = req.getParameter("title");
         Connection connection = Db.getConnection();
         PreparedStatement preparedStatement = null;
         String sql = "DELETE FROM library.books WHERE id = ?";
@@ -116,7 +117,7 @@ public class LibraryBooksAction extends HttpServlet {
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setInt(1,id);
                 preparedStatement.executeUpdate();
-                req.setAttribute("message","成功删除该书籍");
+                req.setAttribute("message","成功删除《"+title+"》");
                 queryAll(req,resp);
             }
             } catch (SQLException e) {
@@ -152,7 +153,8 @@ public class LibraryBooksAction extends HttpServlet {
                     books.add(book);
                 }
                 req.getSession().setAttribute("books", books);
-                resp.sendRedirect("admin.jsp");
+                req.setAttribute("message",req.getAttribute("message"));
+                req.getRequestDispatcher("admin.jsp").forward(req,resp);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -227,6 +229,7 @@ public class LibraryBooksAction extends HttpServlet {
                 preparedStatement.setInt(6,amount);
                 preparedStatement.setInt(7,id);
                 preparedStatement.executeUpdate();
+                req.setAttribute("message","成功编辑该书");
                 queryAll(req, resp);
             }
         } catch (SQLException e) {
