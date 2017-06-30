@@ -47,6 +47,11 @@ public class LibraryBooksAction extends HttpServlet {
             queryById(req, resp);
             return;
         }
+        if ("edit".equals(action)) {
+            System.out.println("进入到edit方案");
+            edit(req, resp);
+            return;
+        }
         req.setAttribute("message", "错误：没有与之匹配的方法");
         req.getRequestDispatcher("index.jsp").forward(req,resp);
     }
@@ -159,6 +164,47 @@ public class LibraryBooksAction extends HttpServlet {
             e.printStackTrace();
         } finally {
             Db.close(resultSet, preparedStatement, connection);
+        }
+    }
+    private void edit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("开始执行edit方法");
+        int id = Integer.parseInt(req.getParameter("id"));
+        String title = req.getParameter("title").trim();
+        String author = req.getParameter("author").trim();
+        String pub = req.getParameter("pub").trim();
+        String time = req.getParameter("time").trim();
+        double price = Double.parseDouble(req.getParameter("price").trim());
+        int amount = Integer.parseInt(req.getParameter("amount").trim());
+        Connection connection = Db.getConnection();
+        PreparedStatement preparedStatement = null;
+        String sql = "UPDATE library.books SET " +
+                "title = ?," +
+                "author= ?," +
+                "pub = ?," +
+                "time = ?," +
+                "price = ?," +
+                "amount = ?" +
+                " WHERE id = ?";;
+        try {
+            if (connection == null) {
+                req.setAttribute("message", "Connection为null");
+                req.getRequestDispatcher("index.jsp").forward(req,resp);
+            } else {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1,title );
+                preparedStatement.setString(2,author);
+                preparedStatement.setString(3,pub );
+                preparedStatement.setString(4,time);
+                preparedStatement.setDouble(5,price );
+                preparedStatement.setInt(6,amount);
+                preparedStatement.setInt(7,id);
+                preparedStatement.executeUpdate();
+                resp.sendRedirect("libraryBooks?action=queryAll");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            Db.close(null, preparedStatement, connection);
         }
     }
 

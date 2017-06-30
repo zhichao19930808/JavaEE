@@ -20,15 +20,16 @@
 <hr>
 ${sessionScope.userName}
 <hr>
-<form action="libraryBooks">
-    <input type="hidden" name="action" value="${sessionScope.book.id}">
+<form action="libraryBooks" method="post">
+    <input type="hidden" name="action" value="edit">
+    <input type="hidden" name="id" value="${sessionScope.book.id}">
     <input type="text" name="title" placeholder="书名" value="${sessionScope.book.title}"><br>
     <input type="text" name="author" placeholder="作者" value="${sessionScope.book.author}"><br>
     <input type="text" name="pub" placeholder="出版社" value="${sessionScope.book.pub}"><br>
     <input type="date" name="time" placeholder="出版时间" value="${sessionScope.book.time}">出版时间<br>
     <input type="text" name="price" placeholder="价格" value="${sessionScope.book.price}"><br>
     <input type="text" name="amount" placeholder="数量" value="${sessionScope.book.amount}"><br>
-    <input type="submit" value="添加">
+    <input type="submit" value="保存">
 </form>
 <hr>
 ${sessionScope.message}
