@@ -10,6 +10,11 @@
 <html>
 <head>
     <title>管理员</title>
+    <script>
+        function del() {
+            return confirm("是否删除该书籍");
+        }
+    </script>
 </head>
 <body>
 <c:if test="${sessionScope.role ne '管理员'}">
@@ -44,7 +49,7 @@ ${sessionScope.userName}
         <th>数量</th>
         <th colspan="2">操作</th>
     </tr>
-    <c:forEach var="book" items="${sessionScope.books}" varStatus="vs">
+    <c:forEach var="book" items="${sessionScope.books}" varStatus="vs" begin="0" end="30" step="1">
         <tr>
             <td>${vs.count}</td>
             <td>${book.title}</td>
