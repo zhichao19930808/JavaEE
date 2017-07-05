@@ -14,11 +14,17 @@
 <h1>首页</h1>
 <form action="libraryUser" method="post">
     <input type="hidden" name="action" value="login"><br>
-    <input type="text" name="userName" placeholder="账户名" value="admin"><br>
+    <input type="text" name="userName" placeholder="账户名" value="张三"><br>
     <input type="password" name="password" placeholder="密码" value="aaa"><br>
     <input type="submit" value="登录">
-    <a href="register.jsp">注册</a>
 </form>
+<hr>
 ${requestScope.message}
+<hr>
+<p>管理员账户：admin</p>
+<p>管理员密码：aaa</p>
+<p>用户请注册</p>
+<a href="register.jsp">注册</a>
+<hr>
 </body>
 </html>

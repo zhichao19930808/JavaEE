@@ -20,6 +20,16 @@
 <hr>
 ${sessionScope.userName}
 <hr>
+<form action="book" method="post">
+<input type="hidden" name="action" value="query">
+<select name="key">
+    <option value="title">书名</option>
+    <option value="author">作者</option>
+    <option value="pub">出版社</option>
+</select>
+<input type="text" name="value" placeholder="关键词">
+<input type="submit" value="查找">
+</form>
 <a href="libraryUser?action=logout">注销</a>
 </body>
 </html>
