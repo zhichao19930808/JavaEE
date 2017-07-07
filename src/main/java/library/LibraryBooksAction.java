@@ -43,8 +43,13 @@ public class LibraryBooksAction extends HttpServlet {
             return;
         }
         if ("queryById".equals(action)) {
-            System.out.println("进入到queryAll方案");
+            System.out.println("进入到queryById方案");
             queryById(req, resp);
+            return;
+        }
+        if ("queryByKey".equals(action)) {
+            System.out.println("进入到queryByKey方案");
+            queryByKey(req, resp);
             return;
         }
         if ("edit".equals(action)) {
@@ -189,6 +194,49 @@ public class LibraryBooksAction extends HttpServlet {
                     );
                 req.getSession().setAttribute("book", book);
                 resp.sendRedirect("edit.jsp");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            Db.close(resultSet, preparedStatement, connection);
+        }
+    }
+    private void queryByKey(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("开始执行queryByKey方法");
+        String key = req.getParameter("key");
+        String value = req.getParameter("value");
+        Connection connection = Db.getConnection();
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String sql = "SELECT * FROM library.books WHERE "+key+" LIKE ?";
+        System.out.println("11111111");
+        try {
+            if (connection == null) {
+                req.setAttribute("message", "Connection为null");
+                req.getRequestDispatcher("index.jsp").forward(req,resp);
+            } else {
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1,"%"+value+"%");
+                resultSet = preparedStatement.executeQuery();
+                ArrayList<Books> books = new ArrayList<>();
+                System.out.println("2222222222");
+                while (resultSet.next()) {
+                    System.out.println("www");
+                    Books book = new Books(
+                            resultSet.getInt("id"),
+                            resultSet.getString("title"),
+                            resultSet.getString("author"),
+                            resultSet.getString("pub"),
+                            resultSet.getString("time"),
+                            resultSet.getDouble("price"),
+                            resultSet.getInt("amount")
+                    );
+                    System.out.println("33333333");
+                    books.add(book);
+                    System.out.println("3");
+                }
+                req.getSession().setAttribute("books", books);
+                resp.sendRedirect("default.jsp");
             }
         } catch (SQLException e) {
             e.printStackTrace();
